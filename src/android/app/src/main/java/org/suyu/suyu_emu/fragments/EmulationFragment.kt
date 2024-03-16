@@ -525,7 +525,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     ) {
         val temperature = getBatteryTemperature(requireContext())
         binding.showThermalsText.text = "$temperature°C"
-        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20)
+        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
     } else {
         binding.showThermalsText.setVisible(false)
     }
