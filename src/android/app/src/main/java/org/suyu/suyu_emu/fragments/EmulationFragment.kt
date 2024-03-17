@@ -65,6 +65,7 @@ import android.util.TypedValue
 import android.os.BatteryManager
 
 class EmulationFragment : Fragment(), SurfaceHolder.Callback {
+    private lateinit var thermalReceiver: ThermalBroadcastReceiver
     private lateinit var emulationState: EmulationState
     private var emulationActivity: EmulationActivity? = null
     private var perfStatsUpdater: (() -> Unit)? = null
@@ -92,6 +93,14 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         } else {
             throw IllegalStateException("EmulationFragment must have EmulationActivity parent")
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 注册BroadcastReceiver来监听电池温度变化
+        thermalReceiver = ThermalBroadcastReceiver()
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        requireContext().registerReceiver(thermalReceiver, filter)
     }
 
     /**
@@ -471,6 +480,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireContext().unregisterReceiver(thermalReceiver)
         _binding = null
     }
 
@@ -517,27 +527,34 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         }
     }
 
-    private fun updateThermalOverlay() {
-    val showOverlay = BooleanSetting.SHOW_THERMAL_OVERLAY.getBoolean()
-    binding.showThermalsText.setVisible(showOverlay)
-    if (showOverlay && emulationViewModel.emulationStarted.value &&
-        !emulationViewModel.isEmulationStopping.value
-    ) {
-        val temperature = getBatteryTemperature(requireContext())
-        binding.showThermalsText.text = "$temperature°C"
-        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-    } else {
-        binding.showThermalsText.setVisible(false)
+    inner class ThermalBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == Intent.ACTION_BATTERY_CHANGED) {
+                val temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) / 10.0f
+                // 更新显示温度的UI组件，比如TextView
+                updateThermalOverlay(temperature)
+            }
+        }
     }
+    
+private fun getBatteryTemperature(context: Context): Float {
+    val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+    val temperature = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_TEMPERATURE) / 10.0f
+    return temperature
 }
 
-private fun getBatteryTemperature(context: Context): Float {
-    val intent: Intent? = context.registerReceiver(
-        null,
-        IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-    )
-    val temperature = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
-    return temperature / 10.0f
+    private fun updateThermalOverlay(temperature: Float) {
+        val showOverlay = BooleanSetting.SHOW_THERMAL_OVERLAY.getBoolean()
+        binding.showThermalsText.setVisible(showOverlay)
+        if (showOverlay && emulationViewModel.emulationStarted.value &&
+            !emulationViewModel.isEmulationStopping.value
+        ) {
+            binding.showThermalsText.text = "$temperature°C"
+            binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+        } else {
+            binding.showThermalsText.setVisible(false)
+        }
+    }
 }
 
     @SuppressLint("SourceLockedOrientationActivity")
