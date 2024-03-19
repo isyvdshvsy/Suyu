@@ -522,20 +522,29 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private fun updateThermalOverlay() {
     val showOverlay = BooleanSetting.SHOW_THERMAL_OVERLAY.getBoolean()
     binding.showThermalsText.setVisible(showOverlay)
+    
     if (showOverlay) {
         if (emulationViewModel.emulationStarted.value &&
             !emulationViewModel.isEmulationStopping.value
         ) {
-            val temperature = context?.let { getBatteryTemperature(it) }
-            if (_binding != null) {
-                binding.showThermalsText.text = "$temperature°C"
-                binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
+            // 异步更新温度信息
+            GlobalScope.launch(Dispatchers.Main) {
+                val temperature = withContext(Dispatchers.IO) {
+                    context?.let { getBatteryTemperature(it) }
+                }
+                
+                if (_binding != null) {
+                    binding.showThermalsText.text = "$temperature°C"
+                    binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
+                }
             }
         }
+        
+        // 每1秒更新一次
         tempUpdater = object : Runnable {
             override fun run() {
                 updateThermalOverlay()
-                tempUpdateHandler.postDelayed(this, 800) // 每800毫秒更新一次
+                tempUpdateHandler.postDelayed(this, 1000) // 每1000毫秒更新一次
             }
         }
         tempUpdateHandler.post(tempUpdater!!)
@@ -544,16 +553,16 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
             tempUpdateHandler.removeCallbacks(it)
         }
     }
-    }
+}
 
-    private fun getBatteryTemperature(context: Context): Float {
-        val intent: Intent? = context.registerReceiver(
-            null,
-            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        )
-        val temperature = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
-        return temperature / 10.0f
-    }
+private fun getBatteryTemperature(context: Context): Float {
+    val intent: Intent? = context.registerReceiver(
+        null,
+        IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+    )
+    val temperature = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
+    return temperature / 10.0f
+}
 
     @SuppressLint("SourceLockedOrientationActivity")
     private fun updateOrientation() {
