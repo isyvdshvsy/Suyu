@@ -63,6 +63,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.TypedValue
 import android.os.BatteryManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private lateinit var emulationState: EmulationState
