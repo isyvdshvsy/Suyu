@@ -525,7 +525,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         if (emulationViewModel.emulationStarted.value &&
             !emulationViewModel.isEmulationStopping.value
         ) {
-            val temperature = getBatteryTemperature(context)
+            val temperature = context?.let { getBatteryTemperature(it) }
             if (_binding != null) {
                 binding.showThermalsText.text = "$temperature°C"
                 binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
