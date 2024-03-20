@@ -71,6 +71,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private var thermalStatsUpdater: (() -> Unit)? = null
     private val tempUpdateHandler = Handler(Looper.getMainLooper())
     private var tempUpdater: Runnable? = null
+    private var previousTemperature: Float = 0.0f
 
     private var _binding: FragmentEmulationBinding? = null
     private val binding get() = _binding!!
@@ -518,35 +519,33 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
             }
         }
     }
-    private fun updateThermalOverlay() {
-    val showOverlay = BooleanSetting.SHOW_THERMAL_OVERLAY.getBoolean()
-    binding.showThermalsText.setVisible(showOverlay)
-    if (showOverlay) {
-        if (emulationViewModel.emulationStarted.value &&
+
+    private fun updateThermalOverlay(temperature: Float) {
+        val showOverlay = BooleanSetting.SHOW_THERMAL_OVERLAY.getBoolean()
+        binding.showThermalsText.setVisible(showOverlay)
+        if (showOverlay && emulationViewModel.emulationStarted.value &&
             !emulationViewModel.isEmulationStopping.value
         ) {
-            val temperature = context?.let { getBatteryTemperature(it) }
-            if (_binding != null) {
-                binding.showThermalsText.text = "$temperature°C"
-                binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
-            }
+            binding.showThermalsText.text = "$temperature°C"
+            binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+        } else {
+            binding.showThermalsText.setVisible(false)
         }
-    } else {
-        binding.showThermalsText.setVisible(false)
     }
-}
 
-private fun getBatteryTemperature(context: Context): Float {
-    val intent: Intent? = context.registerReceiver(
-        null,
-        IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-    )
-    val temperature = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
-    val temperatureFloat = temperature / 10.0f
-    // 在获取到温度后立即更新显示
-    updateThermalOverlay()
-    return temperatureFloat
-}
+    private fun getBatteryTemperatureAndUpdateOverlay(context: Context) {
+        val temperature = getBatteryTemperature(context)
+        if (temperature != previousTemperature) { // 如果温度发生变化
+            updateThermalOverlay(temperature)
+            previousTemperature = temperature // 更新上一个温度值
+        }
+    }
+
+    private fun getBatteryTemperature(context: Context): Float {
+        val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+        val temperature = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_TEMPERATURE)
+        return temperature.toFloat() / 10.0f
+    }
 
     @SuppressLint("SourceLockedOrientationActivity")
     private fun updateOrientation() {
