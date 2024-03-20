@@ -59,10 +59,12 @@ import org.suyu.suyu_emu.overlay.model.OverlayLayout
 import org.suyu.suyu_emu.utils.*
 import org.suyu.suyu_emu.utils.ViewUtils.setVisible
 import java.lang.NullPointerException
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.TypedValue
 import android.os.BatteryManager
+import android.util.TypedValue
+import androidx.core.view.isVisible
 
 class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private lateinit var emulationState: EmulationState
