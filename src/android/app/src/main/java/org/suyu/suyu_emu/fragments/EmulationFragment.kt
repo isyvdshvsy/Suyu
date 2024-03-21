@@ -468,7 +468,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         if (emulationState.isRunning && emulationActivity?.isInPictureInPictureMode != true) {
             emulationState.pause()
         }
-        unregisterReceiver(batteryReceiver)
+        context?.unregisterReceiver(batteryReceiver)
         super.onPause()
     }
 
@@ -485,7 +485,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     override fun onResume() {
         super.onResume()
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        registerReceiver(batteryReceiver, filter)
+        context?.registerReceiver(batteryReceiver, filter)
     }
 
     private fun resetInputOverlay() {
