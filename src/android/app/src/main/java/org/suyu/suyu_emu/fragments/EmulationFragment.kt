@@ -705,10 +705,12 @@ private fun getBatteryTemperature(context: Context): Float {
 
                 R.id.thermal_indicator -> {
                     it.isChecked = !it.isChecked
-                    BooleanSetting.SHOW_THERMAL_OVERLAY.setBoolean(it.isChecked)
-                    val temperature = getBatteryTemperature(requireContext())
-                    updateThermalOverlay(temperature)
-                    true
+                       BooleanSetting.SHOW_THERMAL_OVERLAY.setBoolean(it.isChecked)
+                       if (it.isChecked) {
+                       val temperature = getBatteryTemperature(requireContext())
+                       updateThermalOverlay(temperature)
+                  }
+                  true
                 }
 
                 R.id.menu_edit_overlay -> {
