@@ -95,10 +95,8 @@ class AboutFragment : Fragment() {
         binding.buttonWebsite.setOnClickListener { openLink(getString(R.string.website_link)) }
         binding.buttonGithub.setOnClickListener { openLink(getString(R.string.github_link)) }
 
-        // 添加更新按钮的点击事件监听器
-        binding.buttonCheckUpdates.setOnClickListener {
-            // 在这里调用 UpdateManager 类来进行更新
-            UpdateManager.getInstance().checkForUpdates(requireContext())
+        binding.buttonCheckUpdates?.setOnClickListener {
+        UpdateManager.getInstance().checkForUpdates(requireContext())
         }
 
         setInsets()
