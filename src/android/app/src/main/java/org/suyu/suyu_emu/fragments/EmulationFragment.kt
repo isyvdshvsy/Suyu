@@ -59,21 +59,12 @@ import org.suyu.suyu_emu.overlay.model.OverlayLayout
 import org.suyu.suyu_emu.utils.*
 import org.suyu.suyu_emu.utils.ViewUtils.setVisible
 import java.lang.NullPointerException
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.BatteryManager
-import android.util.TypedValue
-import androidx.core.view.isVisible
 
 class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private lateinit var emulationState: EmulationState
     private var emulationActivity: EmulationActivity? = null
     private var perfStatsUpdater: (() -> Unit)? = null
     private var thermalStatsUpdater: (() -> Unit)? = null
-    private val tempUpdateHandler = Handler(Looper.getMainLooper())
-    private var tempUpdater: Runnable? = null
-    private var lastTemperature: Float? = null
 
     private var _binding: FragmentEmulationBinding? = null
     private val binding get() = _binding!!
@@ -526,30 +517,33 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         val showOverlay = BooleanSetting.SHOW_THERMAL_OVERLAY.getBoolean()
         binding.showThermalsText.setVisible(showOverlay)
         if (showOverlay) {
-            if (emulationViewModel.emulationStarted.value &&
-                !emulationViewModel.isEmulationStopping.value
-            ) {
-                val temperature = getBatteryTemperature(context)
-                if (_binding != null && temperature != lastTemperature) { // 检查温度是否有变化
-                    binding.showThermalsText.text = "$temperature°C"
-                    binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-                    lastTemperature = temperature // 更新最后的温度值
+            thermalStatsUpdater = {
+                if (emulationViewModel.emulationStarted.value &&
+                    !emulationViewModel.isEmulationStopping.value
+                ) {
+                    val thermalStatus = when (powerManager.currentThermalStatus) {
+                        PowerManager.THERMAL_STATUS_LIGHT -> "😥"
+                        PowerManager.THERMAL_STATUS_MODERATE -> "🥵"
+                        PowerManager.THERMAL_STATUS_SEVERE -> "🔥"
+                        PowerManager.THERMAL_STATUS_CRITICAL,
+                        PowerManager.THERMAL_STATUS_EMERGENCY,
+                        PowerManager.THERMAL_STATUS_SHUTDOWN -> "☢️"
+
+                        else -> "🙂"
+                    }
+                    if (_binding != null) {
+                        binding.showThermalsText.text = thermalStatus
+                    }
+                    thermalStatsUpdateHandler.postDelayed(thermalStatsUpdater!!, 1000)
                 }
             }
+            thermalStatsUpdateHandler.post(thermalStatsUpdater!!)
         } else {
-            binding.showThermalsText.setVisible(false)
+            if (thermalStatsUpdater != null) {
+                thermalStatsUpdateHandler.removeCallbacks(thermalStatsUpdater!!)
+            }
         }
     }
-
-    private fun getBatteryTemperature(context: Context): Float {
-        val intent: Intent? = context.registerReceiver(
-            null,
-            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        )
-        val temperature = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
-        return temperature / 10.0f
-    }
-}
 
     @SuppressLint("SourceLockedOrientationActivity")
     private fun updateOrientation() {
