@@ -60,7 +60,6 @@ import org.suyu.suyu_emu.utils.*
 import org.suyu.suyu_emu.utils.ViewUtils.setVisible
 import java.lang.NullPointerException
 import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
@@ -543,7 +542,7 @@ private fun updateThermalOverlay(temperature: Float) {
         !emulationViewModel.isEmulationStopping.value
     ) {
         binding.showThermalsText.text = "$temperature°C"
-        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20)
+        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
     }
 }
 
