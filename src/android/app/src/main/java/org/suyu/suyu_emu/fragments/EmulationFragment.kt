@@ -543,7 +543,6 @@ private fun updateThermalOverlay(temperature: Float) {
         !emulationViewModel.isEmulationStopping.value
     ) {
         binding.showThermalsText.text = "$temperature°C"
-        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
     }
 }
 
