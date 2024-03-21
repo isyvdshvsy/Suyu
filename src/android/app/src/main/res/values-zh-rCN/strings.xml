@@ -165,7 +165,6 @@
     <string name="contributors_description">suyu 团队的用 \u2764 制作</string>
     <string name="contributors_link">https://github.com/suyu-emu/suyu/graphs/contributors</string>
     <string name="licenses_description">Android 版 suyu 离不开这些项目的支持</string>
-    <string name="check_update">检查更新</string>
     <string name="build">构建版本</string>
     <string name="user_data">用户数据</string>
     <string name="user_data_description">导入/导出应用程序所有数据。\n\n导入用户数据时，将删除当前所有的用户数据！</string>
