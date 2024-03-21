@@ -377,7 +377,8 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
 
                 // Setup overlays
                 updateShowFpsOverlay()
-                updateThermalOverlay()
+                val temperature = getBatteryTemperature(requireContext())
+                updateThermalOverlay(temperature)
             }
         }
         emulationViewModel.isEmulationStopping.collect(viewLifecycleOwner) {
