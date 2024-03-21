@@ -96,7 +96,7 @@ class AboutFragment : Fragment() {
         binding.buttonGithub.setOnClickListener { openLink(getString(R.string.github_link)) }
 
         binding.buttonCheckUpdates.setOnClickListener {
-        UpdateManager.checkAndInstallUpdate(this)
+        UpdateManager.checkAndInstallUpdate(requireContext())
         }
 
         setInsets()
