@@ -26,6 +26,7 @@ import org.suyu.suyu_emu.R
 import org.suyu.suyu_emu.databinding.FragmentAboutBinding
 import org.suyu.suyu_emu.model.HomeViewModel
 import org.suyu.suyu_emu.utils.ViewUtils.updateMargins
+import org.suyu.suyu_emu.UpdateManager
 
 class AboutFragment : Fragment() {
     private var _binding: FragmentAboutBinding? = null
@@ -67,9 +68,7 @@ class AboutFragment : Fragment() {
         }
 
         binding.buttonContributors.setOnClickListener {
-            openLink(
-                getString(R.string.contributors_link)
-            )
+            openLink(getString(R.string.contributors_link))
         }
         binding.buttonLicenses.setOnClickListener {
             exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
@@ -96,6 +95,12 @@ class AboutFragment : Fragment() {
         binding.buttonWebsite.setOnClickListener { openLink(getString(R.string.website_link)) }
         binding.buttonGithub.setOnClickListener { openLink(getString(R.string.github_link)) }
 
+        // 添加更新按钮的点击事件监听器
+        binding.buttonCheckUpdates.setOnClickListener {
+            // 在这里调用 UpdateManager 类来进行更新
+            UpdateManager.getInstance().checkForUpdates(requireContext())
+        }
+
         setInsets()
     }
 
@@ -121,4 +126,9 @@ class AboutFragment : Fragment() {
 
             windowInsets
         }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
