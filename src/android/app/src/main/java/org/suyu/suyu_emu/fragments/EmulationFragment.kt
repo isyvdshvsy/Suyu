@@ -377,7 +377,6 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
 
                 // Setup overlays
                 updateShowFpsOverlay()
-                val temperature = getBatteryTemperature(requireContext())
                 updateThermalOverlay(temperature)
             }
         }
@@ -543,7 +542,7 @@ private fun updateThermalOverlay(temperature: Float) {
         !emulationViewModel.isEmulationStopping.value
     ) {
         binding.showThermalsText.text = "$temperature°C"
-        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+        binding.showThermalsText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
     }
 }
 
@@ -707,7 +706,6 @@ private fun getBatteryTemperature(context: Context): Float {
                 R.id.thermal_indicator -> {
                     it.isChecked = !it.isChecked
                     BooleanSetting.SHOW_THERMAL_OVERLAY.setBoolean(it.isChecked)
-                    val temperature = getBatteryTemperature(requireContext())
                     updateThermalOverlay(temperature)
                     true
                 }
