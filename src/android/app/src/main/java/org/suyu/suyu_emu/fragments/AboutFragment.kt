@@ -58,7 +58,7 @@ class AboutFragment : Fragment() {
         }
         
         binding.buttonCheckUpdates?.setOnClickListener {
-            UpdateManager.checkAndInstallUpdate()
+            UpdateManager.checkAndInstallUpdate(requireContext())
         }
 
         binding.imageLogo.setOnLongClickListener {
