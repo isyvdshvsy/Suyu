@@ -57,7 +57,7 @@ class AboutFragment : Fragment() {
             binding.root.findNavController().popBackStack()
         }
         
-        binding.buttonCheckUpdates.setOnClickListener {
+        binding.buttonCheckUpdates?.setOnClickListener {
             UpdateManager.checkAndInstallUpdate(requireContext())
         }
 
