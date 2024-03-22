@@ -21,7 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import java.security.NoSuchAlgorithmException
 import java.io.InputStream
 
-object UpdateManager {
+public object UpdateManager {
     private val client = OkHttpClient()
 
     fun checkAndInstallUpdate(context: Context) {
