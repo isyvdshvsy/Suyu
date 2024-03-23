@@ -709,8 +709,7 @@ private fun getBatteryTemperature(context: Context): Float {
                        if (it.isChecked) {
                        val temperature = getBatteryTemperature(requireContext())
                        updateThermalOverlay(temperature)
-                  }
-                  true
+                       true
                 }
 
                 R.id.menu_edit_overlay -> {
