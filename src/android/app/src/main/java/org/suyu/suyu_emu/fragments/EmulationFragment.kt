@@ -473,6 +473,7 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     }
 
     override fun onDestroyView() {
+        context?.unregisterReceiver(batteryReceiver)
         super.onDestroyView()
         _binding = null
     }
@@ -710,14 +711,13 @@ private fun getBatteryTemperature(context: Context): Float {
         val temperature = getBatteryTemperature(requireContext())
         updateThermalOverlay(temperature)
     } else {
-        hideThermalOverlay(requireContext())
+        // 取消注册广播接收器
+        requireContext().unregisterReceiver(batteryReceiver)
+        // 温度不再显示
+        binding.showThermalsText.text = ""
     }
     true
-}
-
-private fun hideThermalOverlay(context: Context) {
-    (context as EmulationFragment).binding.showThermalsText.text = ""
-}
+                }
 
                 R.id.menu_edit_overlay -> {
                     binding.drawerLayout.close()
