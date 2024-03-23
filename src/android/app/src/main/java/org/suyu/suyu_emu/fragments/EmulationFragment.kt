@@ -465,17 +465,27 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     }
 
     override fun onPause() {
-        if (emulationState.isRunning && emulationActivity?.isInPictureInPictureMode != true) {
-            emulationState.pause()
+    if (emulationState.isRunning && emulationActivity?.isInPictureInPictureMode != true) {
+        emulationState.pause()
+    }
+    context?.let {
+        if (batteryReceiverRegistered) {
+            it.unregisterReceiver(batteryReceiver)
+            batteryReceiverRegistered = false
         }
-        context?.unregisterReceiver(batteryReceiver)
-        super.onPause()
+    }
+    super.onPause()
     }
 
     override fun onDestroyView() {
-        context?.unregisterReceiver(batteryReceiver)
-        super.onDestroyView()
-        _binding = null
+    context?.let {
+        if (batteryReceiverRegistered) {
+            it.unregisterReceiver(batteryReceiver)
+            batteryReceiverRegistered = false
+        }
+    }
+    super.onDestroyView()
+    _binding = null
     }
 
     override fun onDetach() {
@@ -484,9 +494,12 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     }
 
     override fun onResume() {
-        super.onResume()
+    super.onResume()
+    if (!batteryReceiverRegistered) {
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         context?.registerReceiver(batteryReceiver, filter)
+        batteryReceiverRegistered = true
+    }
     }
 
     private fun resetInputOverlay() {
@@ -710,9 +723,16 @@ private fun getBatteryTemperature(context: Context): Float {
     if (it.isChecked) {
         val temperature = getBatteryTemperature(requireContext())
         updateThermalOverlay(temperature)
+        if (!batteryReceiverRegistered) {
+            val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+            context?.registerReceiver(batteryReceiver, filter)
+            batteryReceiverRegistered = true
+        }
     } else {
-        // 取消注册广播接收器
-        requireContext().unregisterReceiver(batteryReceiver)
+        if (batteryReceiverRegistered) {
+            context?.unregisterReceiver(batteryReceiver)
+            batteryReceiverRegistered = false
+        }
         // 温度不再显示
         binding.showThermalsText.text = ""
     }
