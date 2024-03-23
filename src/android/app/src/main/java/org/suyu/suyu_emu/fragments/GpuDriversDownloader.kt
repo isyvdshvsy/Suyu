@@ -1,3 +1,5 @@
+package org.suyu.suyu_emu.fragments
+
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DownloadManager
