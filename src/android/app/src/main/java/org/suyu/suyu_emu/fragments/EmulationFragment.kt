@@ -710,13 +710,13 @@ private fun getBatteryTemperature(context: Context): Float {
         val temperature = getBatteryTemperature(requireContext())
         updateThermalOverlay(temperature)
     } else {
-        hideThermalOverlay(requireContext)
+        hideThermalOverlay(requireContext())
     }
     true
 }
 
-private fun hideThermalOverlay(requireContext) {
-    binding.showThermalsText.text = ""
+private fun hideThermalOverlay(context: Context) {
+    (context as EmulationFragment).binding.showThermalsText.text = ""
 }
 
                 R.id.menu_edit_overlay -> {
