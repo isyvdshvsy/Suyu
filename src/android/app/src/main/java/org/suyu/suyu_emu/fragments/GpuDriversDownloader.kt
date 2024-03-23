@@ -9,6 +9,7 @@ import android.os.AsyncTask
 import android.os.Environment
 import android.widget.Toast
 import java.io.File
+import android.app.ProgressDialog
 
 class GpuDriversDownloader(private val context: Context) {
     private var driverFilePath: String? = null
