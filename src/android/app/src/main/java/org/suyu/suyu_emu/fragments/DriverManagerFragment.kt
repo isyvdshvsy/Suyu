@@ -45,8 +45,6 @@ class DriverManagerFragment : Fragment() {
     private val args by navArgs<DriverManagerFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val gpuDriversDownloader = GpuDriversDownloader(requireContext())
-        gpuDriversDownloader.checkAndDownload()
         super.onCreate(savedInstanceState)
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
@@ -106,7 +104,7 @@ class DriverManagerFragment : Fragment() {
             getDriver.launch(arrayOf("application/zip"))
         }
 
-        binding.buttoninstallduplicate.setOnClickListener {
+        binding.buttonInstala.setOnClickListener {
             getDriver.launch(arrayOf("application/zip"))
         }
 
