@@ -10,6 +10,15 @@ import android.os.Environment
 import android.widget.Toast
 import java.io.File
 import android.app.ProgressDialog
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 
 class GpuDriversDownloader(private val context: Context) {
     private var driverFilePath: String? = null
