@@ -105,7 +105,11 @@ class DriverManagerFragment : Fragment() {
         }
 
         binding.buttonInstala.setOnClickListener {
-            findNavController().navigate(R.id.action_driverManagerFragment_to_myFragment)
+             val myFragment = MyFragment()
+             val transaction = supportFragmentManager.beginTransaction()
+             transaction.replace(R.layout.fragment_my, myFragment)
+             transaction.addToBackStack(null)
+             transaction.commit()
         }
 
         binding.listDrivers.apply {
