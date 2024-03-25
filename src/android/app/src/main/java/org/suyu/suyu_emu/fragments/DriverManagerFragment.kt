@@ -105,7 +105,7 @@ class DriverManagerFragment : Fragment() {
         }
 
         binding.buttonInstala.setOnClickListener {
-            getDriver.launch(arrayOf("application/zip"))
+            findNavController().navigate(R.id.action_driverManagerFragment_to_myFragment)
         }
 
         binding.listDrivers.apply {
