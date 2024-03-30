@@ -34,8 +34,6 @@ import org.suyu.suyu_emu.utils.ViewUtils.updateMargins
 import org.suyu.suyu_emu.utils.collect
 import java.io.File
 import java.io.IOException
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 
 class DriverManagerFragment : Fragment() {
     private var _binding: FragmentDriverManagerBinding? = null
@@ -107,11 +105,8 @@ class DriverManagerFragment : Fragment() {
         }
 
         binding.buttonInstala.setOnClickListener {
-             val myFragment = MyFragment()
-             val transaction = supportFragmentManager.beginTransaction()
-             transaction.replace(R.layout.fragment_my, myFragment)
-             transaction.addToBackStack(null)
-             transaction.commit()
+            val intent = Intent(requireContext(), ActivityMy::class.java)
+            startActivity(intent)
         }
 
         binding.listDrivers.apply {
