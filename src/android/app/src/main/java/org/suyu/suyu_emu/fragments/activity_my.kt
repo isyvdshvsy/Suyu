@@ -9,6 +9,7 @@ import android.os.Environment
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import org.suyu.suyu_emu.R
 
 class MyActivity : AppCompatActivity() {
 
