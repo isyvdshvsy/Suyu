@@ -35,7 +35,7 @@ import org.suyu.suyu_emu.utils.collect
 import java.io.File
 import java.io.IOException
 import android.content.Intent
-import org.suyu.suyu_emu.fragments.activitymy
+import org.suyu.suyu_emu.fragments.activity_my
 
 class DriverManagerFragment : Fragment() {
     private var _binding: FragmentDriverManagerBinding? = null
