@@ -35,6 +35,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
         <activity
             android:name="org.suyu.suyu_emu.ui.main.MainActivity"
+            android:name="Activity_my"
             android:exported="true"
             android:theme="@style/Theme.Suyu.Splash.Main">
 
