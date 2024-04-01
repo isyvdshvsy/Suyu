@@ -1,3 +1,5 @@
+package org.suyu.suyu_emu.fragments
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
