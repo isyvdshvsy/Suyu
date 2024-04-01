@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    tools:context=".DriverDownloadFragment">
+
+    <!-- 第一个下载按钮 -->
+    <Button
+        android:id="@+id/buttonDownload1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下载驱动 1"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_button" />
+
+    <!-- 第二个下载按钮 -->
+    <Button
+        android:id="@+id/buttonDownload2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下载驱动 2"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_button" />
+
+    <!-- 第三个下载按钮 -->
+    <Button
+        android:id="@+id/buttonDownload3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下载驱动 3"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_button" />
+
+    <!-- 第四个下载按钮 -->
+    <Button
+        android:id="@+id/buttonDownload4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下载驱动 4"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_button" />
+
+    <!-- 第五个下载按钮 -->
+    <Button
+        android:id="@+id/buttonDownload5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下载驱动 5"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_button" />
+
+</LinearLayout>
