@@ -107,7 +107,7 @@ class DriverManagerFragment : Fragment() {
         }
 
         binding.buttonInstala.setOnClickListener {
-            val intent = Intent(requireContext(), ActivityMy::class.java)
+            val intent = Intent(requireContext(), activity_my::class.java)
             startActivity(intent)
         }
 
