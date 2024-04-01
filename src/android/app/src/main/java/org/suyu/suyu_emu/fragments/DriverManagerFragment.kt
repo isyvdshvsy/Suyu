@@ -107,8 +107,8 @@ class DriverManagerFragment : Fragment() {
         }
 
         binding.buttonInstala.setOnClickListener {
-            val intent = Intent(requireContext(), activity_my::class.java)
-            startActivity(intent)
+            val action = DriverManagerFragmentDirections.actionDriverManagerFragmentToDriverDownloadFragment()
+            binding.root.findNavController().navigate(action)
         }
 
         binding.listDrivers.apply {
