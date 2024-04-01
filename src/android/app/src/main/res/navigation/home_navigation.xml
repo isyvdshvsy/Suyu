@@ -113,6 +113,14 @@
         android:id="@+id/driverManagerFragment"
         android:name="org.suyu.suyu_emu.fragments.DriverManagerFragment"
         android:label="DriverManagerFragment" >
+    <action
+            android:id="@+id/action_driverManagerFragment_to_driverDownloadFragment"
+            app:destination="@id/driverDownloadFragment" />
+    <fragment
+        android:id="@+id/driverDownloadFragment"
+        android:name="org.suyu.suyu_emu.fragments.DriverDownloadFragment"
+        android:label="DriverDownloadFragment"
+        tools:layout="@layout/fragment_driver_download" />
         <argument
             android:name="game"
             app:argType="org.suyu.suyu_emu.model.Game"
