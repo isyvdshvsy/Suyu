@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import android.widget.Button
+import org.suyu.suyu_emu.R
 import androidx.appcompat.app.AppCompatActivity
 
 class MyActivity : AppCompatActivity() {
