@@ -107,8 +107,16 @@ class DriverManagerFragment : Fragment() {
         }
 
         binding.buttonInstala.setOnClickListener {
-            val action = DriverManagerFragmentDirections.actionDriverManagerFragmentToDriverDownloadFragment()
-            binding.root.findNavController().navigate(action)
+    // 创建 DriverDownloadFragment 的实例
+    val driverDownloadFragment = DriverDownloadFragment()
+    // 获取 FragmentManager 并开启一个事务
+    val transaction = supportFragmentManager.beginTransaction()
+    // 替换一个容器视图为 DriverDownloadFragment, 这里的 R.id.fragment_container 需要替换为你的容器视图的 ID
+    transaction.replace(R.id.fragment_driver_download, driverDownloadFragment)
+    // 将事务加入到回退栈中
+    transaction.addToBackStack(null)
+    // 提交事务
+    transaction.commit()
         }
 
         binding.listDrivers.apply {
