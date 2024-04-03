@@ -120,14 +120,6 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
-        android:id="@+id/driverDownloadFragment"
-        android:name="org.suyu.suyu_emu.fragments.DriverDownloadFragment"
-        android:label="DriverDownloadFragment" >
-        <action
-            android:id="@+id/action_driverManagerFragment_to_driverDownloadFragment"
-            app:destination="@id/driverDownloadFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/appletLauncherFragment"
         android:name="org.suyu.suyu_emu.fragments.AppletLauncherFragment"
         android:label="AppletLauncherFragment" >
@@ -156,9 +148,6 @@
         <action
             android:id="@+id/action_perGamePropertiesFragment_to_addonsFragment"
             app:destination="@id/addonsFragment" />
-        <action
-            android:id="@+id/action_perGamePropertiesFragment_to_driverManagerFragment"
-            app:destination="@id/driverManagerFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_perGamePropertiesFragment"
